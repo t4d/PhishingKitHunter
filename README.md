@@ -61,6 +61,29 @@ _|    _|\_\_|  _|\__,_|_|  _|\__|\___|_|
 			-c --config   Configuration file to use (default: ./conf/defaults.conf)
 ~~~
 
+## JSON report example
+~~~
+$ cat ./PKHunter-report-20170502-013307.json
+
+{
+    "PK_URL": "http://badscam.org/includes/ap/?a=2",
+    "PK_info": {
+        "Domain": "badscam.org",
+        "HTTP_sha256": "",
+        "HTTP_status": "can't connect (HTTP Error 404: Not Found)",
+        "date": "01/May/2017:13:00:03"
+    }
+}{
+    "PK_URL": "http://assur.cam.tech/scam/brand/new/2bd5a55bc5e768e530d8bda80a9b8593/",
+    "PK_info": {
+        "Domain": "assur.cam.tech",
+        "HTTP_sha256": "0032588b8d93a807cf0f48a806ccf125677503a6fabe4105a6dc69e81ace6091",
+        "HTTP_status": "UP",
+        "date": "01/May/2017:13:01:14"
+    }
+}
+[...]
+~~~
 
 ## Requirements
 * Python 3
