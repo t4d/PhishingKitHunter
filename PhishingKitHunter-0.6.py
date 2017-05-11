@@ -17,8 +17,6 @@
 #	You should have received a copy of the GNU Affero General Public License
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# https://stackoverflow.com/questions/24898797/check-if-key-exists-and-iterate-the-json-array-using-python#24898931
-
 import re
 import time
 import getopt
@@ -35,7 +33,7 @@ from re import findall
 from urllib.parse import urlparse
 from tqdm import tqdm
 
-VERSION = "0.6b"
+VERSION = "0.6c"
 
 ## Graceful banner  :)
 def banner():
@@ -179,7 +177,6 @@ def usage():
 
 ## Commandline options
 # TODO: gestion erreurs
-# "NameError: name 'LogFile' is not defined"
 def args_parse():
 	global JSONFile
 	global LogFile
@@ -225,7 +222,6 @@ def main():
 						# Parse logfile to extract strings
 						LogPattern_search(line)
 						# If request found and referer is what your looking for
-						# Except, verify your log_pattern regex in config file
 						if RegRequest(ResRequestEx):
 							dom_extract(ResRefererEx)
 							if not RegReferer(ex_url) and ResRefererEx is not None:
