@@ -15,14 +15,14 @@ This tool - write in Python 3 - is based on the analysis of referer's URL which 
 
 ## Usage
 ~~~
-$ ./PhishingKitHunter-0.6.py -i LogFile2017.log -o PKHunter-report-20170502-013307.json -c conf/test.conf
+$ ./PhishingKitHunter.py -i LogFile2017.log -o PKHunter-report-20170502-013307.json -c conf/test.conf
 
   _ \  |  / |   |             |            
  |   | ' /  |   | |   | __ \  __|  _ \  __|
  ___/  . \  ___ | |   | |   | |    __/ |   
 _|    _|\_\_|  _|\__,_|_|  _|\__|\___|_|   
 
--= Phishing Kit Hunter - v0.6b =-
+-= Phishing Kit Hunter - v0.7 =-
 
 [+] http://badscam.org/includes/ap/?a=2
 		|   Timestamp: 01/May/2017:13:00:03
@@ -37,16 +37,22 @@ _|    _|\_\_|  _|\__,_|_|  _|\__|\___|_|
 		|   Timestamp: 01/May/2017:13:01:14
 		| HTTP status: UP
 		| HTTP shash : 0032588b8d93a807cf0f48a806ccf125677503a6fabe4105a6dc69e81ace6091
+                | DOMAIN registrar: ASCIO TECHNOLOGIES, INC. DANMARK - FILIAL AF ASCIO TECHNOLOGIES, INC. USA
+                | DOMAIN creation date: 2008-07-10 00:00:00
+                | DOMAIN expiration date: 2017-07-10 00:00:00
 [+] http://phish-other.eu/assur/big/phish/2be1c6afdbfc065c410d36ba88e7e4c9/
 		|   Timestamp: 01/May/2017:13:01:15
 		| HTTP status: UP
 		| HTTP shash : 2a545c4d321e3b3cbb34af62e6e6fbfbdbc00a400bf70280cb00f4f6bb0eac44
+                | DOMAIN registrar: Hostmaster Strato Rechenzentrum
+                | DOMAIN creation date: None found
+                | DOMAIN expiration date: None found
 697475it [06:41, 1208.14it/s]
 ~~~
 
 ## Help
 ~~~
-$ ./PhishingKitHunter-0.6.py --help
+$ ./PhishingKitHunter.py --help
 
   _ \  |  / |   |             |            
  |   | ' /  |   | |   | __ \  __|  _ \  __|
@@ -80,6 +86,9 @@ $ cat ./PKHunter-report-20170502-013307.json
         "HTTP_sha256": "0032588b8d93a807cf0f48a806ccf125677503a6fabe4105a6dc69e81ace6091",
         "HTTP_status": "UP",
         "date": "01/May/2017:13:01:14"
+        "domain creation date": "None found",
+        "domain expiration date": "None found",
+        "domain registrar": "Hostmaster Strato Rechenzentrum"
     }
 }
 [...]
@@ -91,6 +100,7 @@ $ cat ./PKHunter-report-20170502-013307.json
 * tqdm
 * json
 * PySocks
+* whois
 
 ## Install
 Install the requirements
