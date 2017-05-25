@@ -26,14 +26,15 @@ import warnings
 import configparser
 import hashlib
 import urllib.request
-import socks 				# pip3 install PySocks
+import socks
 import socket
+import whois
 from sockshandler import SocksiPyHandler
 from re import findall
 from urllib.parse import urlparse
 from tqdm import tqdm
 
-VERSION = "0.6c"
+VERSION = "0.7"
 
 ## Graceful banner  :)
 def banner():
@@ -105,7 +106,44 @@ def LogPattern_search(Line):
 def dom_extract(ref):
 	global ex_url
 	refurl = urlparse(ref)
-	ex_url = refurl.netloc
+	ex_url = refurl.netloc 
+
+## WHOIS informations
+def whois_enrich(ex_url):
+	global domain_registrar
+	global domain_creat_date
+	global domain_expi_date
+	try:
+		domreq = whois.query(ex_url)
+		if domreq.registrar is not None:
+			domain_registrar = domreq.registrar
+		else:
+			domain_registrar = 'Not found'
+
+		if domreq.creation_date is not None:
+			domain_creat_date = domreq.creation_date
+			domain_creat_date = str(domreq.creation_date)
+		else:
+			domain_creat_date = 'None found'
+
+		if domreq.expiration_date is not None:
+			domain_expi_date = str(domreq.expiration_date)
+		else:
+			domain_expi_date = 'None found'
+
+	except Exception:
+		pass
+
+## Test DNS connectivitydef test_con43(host="whois.internic.net", port=43, timeout=3):
+	global resolv_dns
+	# can you connect?
+	try:
+		socket.setdefaulttimeout(timeout)
+		socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+		resolv_dns = 'OK'
+	# no you can't
+	except:
+		pass
 
 ## HTTP Get
 def get_page(ResRefererEx):
@@ -231,7 +269,18 @@ def main():
 								tqdm.write('\t| HTTP status: '+ PK_status)
 								if PK_status is 'UP':
 									tqdm.write('\t| HTTP shash : '+ htmlshash)
-									add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": htmlshash, "HTTP_status": PK_status, "date": ResTimestamp,}}
+									if resolv_dns in 'OK':
+										try:
+											whois_enrich(ex_url)
+											tqdm.write('\t| DOMAIN registrar: '+ domain_registrar)
+											tqdm.write('\t| DOMAIN creation date: '+ domain_creat_date)
+											tqdm.write('\t| DOMAIN expiration date: '+ domain_expi_date)
+											add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": htmlshash, "HTTP_status": PK_status, "date": ResTimestamp, "domain registrar": domain_registrar, "domain creation date": domain_creat_date, "domain expiration date": domain_expi_date, }}
+										except NameError:
+											add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": htmlshash, "HTTP_status": PK_status, "date": ResTimestamp,}}
+									else:
+										add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": htmlshash, "HTTP_status": PK_status, "date": ResTimestamp,}}
+									
 									json.dump(add_json, jsonfile, indent=4, sort_keys=True)
 								else:
 									# JSON Report
@@ -248,5 +297,6 @@ def main():
   
 if __name__ == '__main__':
 	args_parse()
+	test_con43()
 	read_config(ConfFile)
 	main()
