@@ -264,7 +264,7 @@ def main():
 						if RegRequest(ResRequestEx):
 							dom_extract(ResRefererEx)
 							if not RegReferer(ex_url) and ResRefererEx is not None:
-								tqdm.write('[+] ' + ResRefererEx)
+								tqdm.write('\n[+] ' + ResRefererEx)
 								tqdm.write('\t|   Timestamp: '+ ResTimestamp)
 								get_page(ResRefererEx)
 								tqdm.write('\t| HTTP status: '+ PK_status)
