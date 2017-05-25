@@ -134,7 +134,8 @@ def whois_enrich(ex_url):
 	except Exception:
 		pass
 
-## Test DNS connectivitydef test_con43(host="whois.internic.net", port=43, timeout=3):
+## Test DNS connectivity
+def test_con43(host="whois.internic.net", port=43, timeout=3):
 	global resolv_dns
 	# can you connect?
 	try:
