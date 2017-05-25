@@ -12,6 +12,7 @@ This tool - write in Python 3 - is based on the analysis of referer's URL which 
 - use a hash of the phishing kit's page to identify the kit
 - use a timestamp for history
 - can use HTTP or SOCKS5 proxy
+- WHOIS enrichment to console and JSON report
 
 ## Usage
 ~~~
