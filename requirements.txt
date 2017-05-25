@@ -1,3 +1,4 @@
 tqdm==4.11.2
 PySocks==1.6.7
 SocksiPy_branch==1.01
+whois==0.7
