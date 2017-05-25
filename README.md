@@ -106,7 +106,7 @@ $ cat ./PKHunter-report-20170502-013307.json
 ## Install
 Install the requirements
 ~~~
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ~~~
 
 ## Configure
