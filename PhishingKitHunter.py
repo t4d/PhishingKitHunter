@@ -137,6 +137,7 @@ def whois_enrich(ex_url):
 ## Test DNS connectivity
 def test_con43(host="whois.internic.net", port=43, timeout=3):
 	global resolv_dns
+        resolv_dns = 'NOK'
 	# can you connect?
 	try:
 		socket.setdefaulttimeout(timeout)
