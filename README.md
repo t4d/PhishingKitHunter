@@ -111,3 +111,22 @@ pip3 install -r requirements.txt
 
 ## Configure
 Please read the conf/default.conf file to learn how to configure PhishingKitHunter.
+
+## Docker
+You can use the Dockerfile to create a Docker container which automaticaly git clone this repository.
+This is based on the latest light Phusion distrib, get packages needed to get and execute **PhishingKitHunter**.
+
+Build the container:
+~~~
+$ docker build tad/pkhunter .
+~~~
+
+Start the container with some options (as your local log files repository):
+~~~
+$ docker run -d -P --name PKHunter --volume /var/log:/opt/logfiles tad/pkhunter
+~~~
+
+You can now execute  shell and start your analysis:
+~~~
+$ docker exec -ti tad/pkhunter /bin/bash
+~~~
