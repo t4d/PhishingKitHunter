@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #	PhishingKitHunter - Find phishing kits which use your brand/organization's files and image
-#	Copyright (C) 2017 Thomas Damonneville
+#	Copyright (C) 2017-2018 Thomas Damonneville
 #	
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU Affero General Public License as
@@ -21,7 +21,7 @@ import re
 import time
 import getopt
 import sys
-import json
+import csv
 import warnings
 import configparser
 import hashlib
@@ -34,7 +34,7 @@ from re import findall
 from urllib.parse import urlparse
 from tqdm import tqdm
 
-VERSION = "0.7"
+VERSION = "0.8"
 
 ## Graceful banner  :)
 def banner():
@@ -209,7 +209,7 @@ def usage():
 	usage = """
 	-h --help		Prints this
 	-i --ifile		Input logfile to analyse
-	-o --ofile		Output JSON report file (default: ./PKHunter-report-'date'-'hour'.json)
+	-o --ofile		Output CSV report file (default: ./PKHunter-report-'date'-'hour'.csv)
 	-c --config		Configuration file to use (default: ./conf/defaults.conf)
 	"""
 	print (usage)
@@ -218,11 +218,11 @@ def usage():
 ## Commandline options
 # TODO: gestion erreurs
 def args_parse():
-	global JSONFile
+	global CSVFile
 	global LogFile
 	global ConfFile
 	ConfFile = './conf/defaults.conf'
-	JSONFile = './PKHunter-report-'+time.strftime("%Y%m%d-%H%M%S")+'.json'
+	CSVFile = './PKHunter-report-'+time.strftime("%Y%m%d-%H%M%S")+'.csv'
 
 	if not len(sys.argv[1:]):
 		usage()
@@ -240,7 +240,7 @@ def args_parse():
 		elif o in ("-i", "--ifile"):
 			LogFile = a
 		elif o in ("-o", "--ofile"):
-			JSONFile = a
+			CSVFile = a
 		elif o in ("-c", "--config"):
 			ConfFile = a
 		else:
@@ -251,8 +251,12 @@ def args_parse():
 ## Main
 def main():
 	banner()
-	# Open report file
-	with open(JSONFile, 'w', encoding='utf-8', newline='\r\n') as jsonfile:
+	# Open CSV report file
+	with open(CSVFile, 'w', encoding='utf-8', newline='\r\n') as csvfile:
+		writer = csv.writer(csvfile, delimiter=';')
+		# CSV file first line
+		row=("PK_URL","Domain","HTTP_sha256","HTTP_status","date","domain registrar","domain creation date","domain creation date","domain expiration date")
+		writer.writerow(row)
 		# Parse logs file
 		try:
 			# Open logs file and replace non-utf8 chars
@@ -277,17 +281,20 @@ def main():
 											tqdm.write('\t| DOMAIN registrar: '+ domain_registrar)
 											tqdm.write('\t| DOMAIN creation date: '+ domain_creat_date)
 											tqdm.write('\t| DOMAIN expiration date: '+ domain_expi_date)
-											add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": htmlshash, "HTTP_status": PK_status, "date": ResTimestamp, "domain registrar": domain_registrar, "domain creation date": domain_creat_date, "domain expiration date": domain_expi_date, }}
+
+											row=(ResRefererEx,ex_url,htmlshash,PK_status,ResTimestamp,domain_registrar,domain_creat_date,domain_expi_date)
+											writer.writerow(row)
 										except NameError:
-											add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": htmlshash, "HTTP_status": PK_status, "date": ResTimestamp,}}
+											row=(ResRefererEx,ex_url,htmlshash,PK_status,ResTimestamp,'','','')
+											writer.writerow(row)
 									else:
-										add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": htmlshash, "HTTP_status": PK_status, "date": ResTimestamp,}}
-									
-									json.dump(add_json, jsonfile, indent=4, sort_keys=True)
+										row=(ResRefererEx,ex_url,htmlshash,PK_status,ResTimestamp,'','','')
+										writer.writerow(row)
+
 								else:
-									# JSON Report
-									add_json = {"PK_URL": ResRefererEx, "PK_info": {"Domain": ex_url, "HTTP_sha256": "", "HTTP_status": PK_status, "date": ResTimestamp,}}
-									json.dump(add_json, jsonfile, indent=4, sort_keys=True)
+									# CSV Report
+									row=(ResRefererEx,ex_url,'',PK_status,ResTimestamp,'','','')
+									writer.writerow(row)
 					except:
 						err = sys.exc_info()
 						tqdm.write(err)
@@ -295,7 +302,6 @@ def main():
 		except IOError:
 			print ("Error: Log file does not appear to exist.")
 			return 0
-
   
 if __name__ == '__main__':
 	args_parse()

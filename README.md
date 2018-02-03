@@ -8,22 +8,22 @@ This tool - write in Python 3 - is based on the analysis of referer's URL which 
 ## Features
 - find URL where a phishing kit is deployed
 - find if the phishing kit is still up and running
-- generate a JSON report usefull for external usage
+- generate a CSV report useful for external usage
 - use a hash of the phishing kit's page to identify the kit
 - use a timestamp for history
 - can use HTTP or SOCKS5 proxy
-- WHOIS enrichment to console and JSON report
+- WHOIS enrichment to console and CSV report
 
 ## Usage
 ~~~
-$ ./PhishingKitHunter.py -i LogFile2017.log -o PKHunter-report-20170502-013307.json -c conf/test.conf
+$ ./PhishingKitHunter.py -i LogFile2017.log -o PKHunter-report-20170502-013307.csv -c conf/test.conf
 
   _ \  |  / |   |             |            
  |   | ' /  |   | |   | __ \  __|  _ \  __|
  ___/  . \  ___ | |   | |   | |    __/ |   
 _|    _|\_\_|  _|\__,_|_|  _|\__|\___|_|   
 
--= Phishing Kit Hunter - v0.7 =-
+-= Phishing Kit Hunter - v0.8 =-
 
 [+] http://badscam.org/includes/ap/?a=2
 		|   Timestamp: 01/May/2017:13:00:03
@@ -60,38 +60,20 @@ $ ./PhishingKitHunter.py --help
  ___/  . \  ___ | |   | |   | |    __/ |   
 _|    _|\_\_|  _|\__,_|_|  _|\__|\___|_|    
 
--= Phishing Kit Hunter - v0.6b =-
+-= Phishing Kit Hunter - v0.8 =-
 
 			-h --help   Prints this
 			-i --ifile    Input logfile to analyse
-			-o --ofile    Output JSON report file (default: ./PKHunter-report-'date'-'hour'.json)
+			-o --ofile    Output CSV report file (default: ./PKHunter-report-'date'-'hour'.csv)
 			-c --config   Configuration file to use (default: ./conf/defaults.conf)
 ~~~
 
-## JSON report example
+## CSV report example
 ~~~
-$ cat ./PKHunter-report-20170502-013307.json
-
-{
-    "PK_URL": "http://badscam.org/includes/ap/?a=2",
-    "PK_info": {
-        "Domain": "badscam.org",
-        "HTTP_sha256": "",
-        "HTTP_status": "can't connect (HTTP Error 404: Not Found)",
-        "date": "01/May/2017:13:00:03"
-    }
-}{
-    "PK_URL": "http://assur.cam.tech/scam/brand/new/2bd5a55bc5e768e530d8bda80a9b8593/",
-    "PK_info": {
-        "Domain": "assur.cam.tech",
-        "HTTP_sha256": "0032588b8d93a807cf0f48a806ccf125677503a6fabe4105a6dc69e81ace6091",
-        "HTTP_status": "UP",
-        "date": "01/May/2017:13:01:14"
-        "domain creation date": "None found",
-        "domain expiration date": "None found",
-        "domain registrar": "Hostmaster Strato Rechenzentrum"
-    }
-}
+$ cat ./PKHunter-report-20170502-013307.csv
+PK_URL;Domain;HTTP_sha256;HTTP_status;date;domain registrar;domain creation date;domain creation date;domain expiration date
+http://badscam.org/includes/ap/?a=2;badscam.org;;can't connect (HTTP Error 404: Not Found);01/May/2017:13:00:03;;;
+http://assur.cam.tech/scam/brand/new/2bd5a55bc5e768e530d8bda80a9b8593/;assur.cam.tech;0032588b8d93a807cf0f48a806ccf125677503a6fabe4105a6dc69e81ace6091;UP;01/May/2017:13:01:14;None found;None found;Hostmaster Strato Rechenzentrum
 [...]
 ~~~
 
@@ -99,7 +81,7 @@ $ cat ./PKHunter-report-20170502-013307.json
 * Python 3
 * requests
 * tqdm
-* json
+* csv
 * PySocks
 * whois
 
