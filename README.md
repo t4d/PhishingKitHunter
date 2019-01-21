@@ -23,7 +23,7 @@ $ ./PhishingKitHunter.py -i LogFile2017.log -o PKHunter-report-20170502-013307.c
  ___/  . \  ___ | |   | |   | |    __/ |   
 _|    _|\_\_|  _|\__,_|_|  _|\__|\___|_|   
 
--= Phishing Kit Hunter - v0.8 =-
+-= Phishing Kit Hunter - v0.8.1 =-
 
 [+] http://badscam.org/includes/ap/?a=2
 		|   Timestamp: 01/May/2017:13:00:03
@@ -60,7 +60,7 @@ $ ./PhishingKitHunter.py --help
  ___/  . \  ___ | |   | |   | |    __/ |   
 _|    _|\_\_|  _|\__,_|_|  _|\__|\___|_|    
 
--= Phishing Kit Hunter - v0.8 =-
+-= Phishing Kit Hunter - v0.8.1 =-
 
 			-h --help   Prints this
 			-i --ifile    Input logfile to analyse
@@ -79,11 +79,9 @@ http://assur.cam.tech/scam/brand/new/2bd5a55bc5e768e530d8bda80a9b8593/;assur.cam
 
 ## Requirements
 * Python 3
-* requests
 * tqdm
 * csv
-* PySocks
-* whois
+* python-whois
 
 ## Install
 Install the requirements
